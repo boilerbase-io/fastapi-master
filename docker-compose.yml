@@ -1,0 +1,30 @@
+services:
+    db:
+        image: postgres:15
+        expose:
+            - 5444
+        ports:
+            - 5444:5432
+        volumes:
+            - boilerbase_postgres_data:/var/lib/postgresql/data
+        env_file:
+            - .env
+
+    web:
+        build: .
+        command: bash -c "uvicorn src.main:create_app --host 0.0.0.0 --port 8000 --reload --factory"
+        env_file:
+            - .env
+        environment:
+            POSTGRES_SERVER: db
+        volumes:
+            - ./:/vision_image
+        ports:
+            - 8000:8000
+        depends_on:
+            - db
+        stdin_open: true
+        tty: true
+
+volumes:
+    boilerbase_postgres_data:

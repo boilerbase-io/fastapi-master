@@ -1,0 +1,16 @@
+# Basic project configs
+CONTACT_EMAIL=contact@demo.com
+
+# Server configs
+LOG_LEVEL=DEBUG
+DEPLOYMENT_ENV=TEST
+SERVER_PORT=8000
+SERVER_HOST=0.0.0.0
+TERMS_OF_SERVICE=https://dummy.url/tnc
+
+# database config
+POSTGRES_USER=saas_base
+POSTGRES_PASSWORD=saas2password
+POSTGRES_DB=saas_db
+POSTGRES_SERVER=localhost
+POSTGRES_PORT=5432
