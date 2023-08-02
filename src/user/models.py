@@ -55,7 +55,7 @@ class User(ModelBase):
                 "role": self.role,
                 "is_active": self.is_active,
                 "is_banned": self.is_banned,
-                "exp": Config.ACCESS_TOKEN_EXPIRE_MINUTES,
+                "exp": Config.JWT_EXPIRATION_TIME,
             },
             key=Config.JWT_SECRET_KEY,
             algorithm=Config.JWT_ALGORITHM,

@@ -6,8 +6,8 @@ from src.user.schemas import (
 )
 from fastapi import APIRouter, status, HTTPException
 from src.user.crud import user_crud
-from user.models import UserRoles
-from user.utils.deps import is_authorized_for, authenticated_user
+from src.user.models import UserRoles
+from src.user.utils.deps import is_authorized_for, authenticated_user
 from utils.db.session import get_db
 from typing import List
 
@@ -57,9 +57,10 @@ def update_user(
     user, db = user_db
     return user_crud.update(db, db_obj=user, obj_in=user_req)
 
-@user_router.delete("/user", status_code=status.HTTP_204_NO_CONTENT, status_code=status.HTTP_201_CREATED)
+@user_router.delete("/user",status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(
     user_db: authenticated_user
 ):
     user, db = user_db
-    return user_crud.soft_del(db, db_obj=user)
+    user_crud.soft_del(db, db_obj=user)
+    return None

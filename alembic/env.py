@@ -5,7 +5,7 @@ from alembic import context
 from sqlalchemy import create_engine
 from logging.config import fileConfig
 
-from src.config import settings
+from src.config import Config
 
 from utils.db.session import ModelBase
 
@@ -35,7 +35,7 @@ target_metadata = ModelBase.metadata
 
 
 def get_url():
-    return settings.assemble_db_connection()
+    return Config.assemble_db_connection()
 
 
 def run_migrations_offline() -> None:

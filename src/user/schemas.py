@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from utils.schemas.base import BaseSchema
 
 
-class UserRequest(BaseModel):
+class UserUpdate(BaseModel):
     firstname: Optional[str]
     lastname: Optional[str]
     image_url: Optional[str]
@@ -12,11 +12,12 @@ class UserRequest(BaseModel):
     phone_number_country_code: Optional[str]
     phone_number: Optional[int] = None
 
-    updated_by: Optional[str]
 
-
-class UserUpdate(UserRequest):
-    pass
+class UserRequest(UserUpdate):
+    firstname: str
+    lastname: str
+    email: str
+    password: str
 
 
 class UserResponse(UserRequest):
@@ -33,6 +34,7 @@ class UserResponse(UserRequest):
 
 class UserBase(BaseSchema, UserResponse):
     id: Optional[str]
+    updated_by: Optional[str]
 
 
 class LoginRequest(BaseModel):

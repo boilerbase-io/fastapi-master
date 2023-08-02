@@ -39,15 +39,16 @@ class Config:
     else:
         BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
 
-    def assemble_db_connection(self):
+    @staticmethod
+    def assemble_db_connection():
         return PostgresDsn.build(
             scheme="postgresql",
-            user=os.environ["POSTGRES_USER"],
+            username=os.environ["POSTGRES_USER"],
             password=os.environ["POSTGRES_PASSWORD"],
-            port=os.environ["POSTGRES_PORT"],
+            port=int(os.environ["POSTGRES_PORT"]),
             host=os.environ["POSTGRES_SERVER"],
-            path=f'/{os.environ["POSTGRES_DB"] or ""}',
-        )
+            path=os.environ["POSTGRES_DB"] or "",
+        ).unicode_string()
 
     ##############################################################################################
     #       ModelBase config is done. if you are adding new domain to this project please make
@@ -58,5 +59,5 @@ class Config:
     # =============================== User Domain Config =========================================
     JWT_ALGORITHM: str = os.environ["JWT_ALGORITHM"]
     JWT_SECRET_KEY: str = os.environ["JWT_SECRET_KEY"]
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = os.environ["ACCESS_TOKEN_EXPIRE_MINUTES"]
+    JWT_EXPIRATION_TIME: int = os.environ["JWT_EXPIRATION_TIME"]
     # ================================== DIVISION END ============================================

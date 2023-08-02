@@ -1,6 +1,6 @@
 import jwt
 from typing import Tuple
-from config import Config
+from src.config import Config
 from typing import Annotated
 from sqlalchemy.orm import Session
 from src.user.models import User
