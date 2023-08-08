@@ -1,8 +1,8 @@
 import jwt
-import bcrypt
 from enum import Enum
 from sqlalchemy import Column
 from utils.db.base import ModelBase
+from passlib.hash import pbkdf2_sha256
 from sqlalchemy.sql.sqltypes import Boolean, String
 from src.config import Config
 
@@ -41,11 +41,13 @@ class User(ModelBase):
                 Last Name: {self.lastname}
         """
 
-    def set_password(self, plain_password):
-        self.password = bcrypt.hashpw(plain_password, bcrypt.gensalt())
+    def set_password(self, password):
+        """Hash a password for storing."""
+        self.password = pbkdf2_sha256.hash(password)
 
-    def check_password(self, plain_password):
-        return bcrypt.checkpw(plain_password, self.password)
+    def verify_password(self, provided_password):
+        """Verify a stored password against one provided by user"""
+        return pbkdf2_sha256.verify(provided_password, self.password)
 
     def create_token(self):
         return jwt.encode(
@@ -59,4 +61,4 @@ class User(ModelBase):
             },
             key=Config.JWT_SECRET_KEY,
             algorithm=Config.JWT_ALGORITHM,
-        )
+        ).decode("utf-8")

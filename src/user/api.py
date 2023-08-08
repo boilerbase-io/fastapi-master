@@ -1,5 +1,7 @@
+import uuid
 from src.user.schemas import (
     LoginRequest,
+    UserBase,
     Token,
     UserRequest,
     UserResponse,
@@ -18,7 +20,13 @@ user_router = APIRouter()
     "/signup", response_model=UserResponse, status_code=status.HTTP_201_CREATED
 )
 def signup(user_req: UserRequest, db: get_db):
-    return user_crud.create(db, obj_in=user_req)
+    user_id = str(uuid.uuid4())
+    return user_crud.create(
+        db,
+        obj_in=UserBase(
+            id=user_id, created_by=user_id, updated_by=user_id, **user_req.model_dump()
+        ),
+    )
 
 
 @user_router.post("/login", response_model=Token, status_code=status.HTTP_200_OK)
@@ -49,18 +57,16 @@ def get_users(
     return user_crud.get_multi(db)
 
 
-@user_router.patch("/user", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-def update_user(
-    user_req: UserRequest,
-    user_db: authenticated_user
-):
+@user_router.patch(
+    "/user", response_model=UserResponse, status_code=status.HTTP_201_CREATED
+)
+def update_user(user_req: UserRequest, user_db: authenticated_user):
     user, db = user_db
     return user_crud.update(db, db_obj=user, obj_in=user_req)
 
-@user_router.delete("/user",status_code=status.HTTP_204_NO_CONTENT)
-def delete_user(
-    user_db: authenticated_user
-):
+
+@user_router.delete("/user", status_code=status.HTTP_204_NO_CONTENT)
+def delete_user(user_db: authenticated_user):
     user, db = user_db
     user_crud.soft_del(db, db_obj=user)
     return None

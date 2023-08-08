@@ -32,21 +32,11 @@ from src.main import create_app
 from src.user.utils.deps import authenticated_user
 
 from typing import Any
-from src.user.crud import crud_user
+from src.user.crud import user_crud
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 # Factory imports
-from tests.factory import (
-    LikeFactory,
-    UserFactory,
-    UsageFactory,
-    UserLogFactory,
-    FeedbackFactory,
-    ModifierFactory,
-    ServicesFactory,
-    GenerationFactory,
-    PreferencesFactory,
-)
+from tests.factory import UserFactory
 
 
 # load env vars
@@ -158,7 +148,7 @@ def app(engine: Engine) -> Generator[FastAPI, Any, None]:
     Create a fresh database on each test case.
     """
     ModelBase.metadata.create_all(bind=engine)  # Create the tables.
-    _app = create_app(env_path=TEST_ENV_PATH)
+    _app = create_app()
 
     yield _app
 
@@ -184,7 +174,7 @@ def client(app: FastAPI, db_session: Session) -> Generator[TestClient, Any, None
     ):
         user_id = session_token
         try:
-            user = crud_user.get_by_id(db, id=user_id)
+            user = user_crud.get_by_id(db, id=user_id)
             if user:
                 return db, user
             else:
@@ -246,14 +236,6 @@ pytest.persist_object = persist_object
 
 # register factories
 register(UserFactory)
-register(LikeFactory)
-register(UsageFactory)
-register(UserLogFactory)
-register(ModifierFactory)
-register(FeedbackFactory)
-register(ServicesFactory)
-register(GenerationFactory)
-register(PreferencesFactory)
 
 
 @pytest.fixture
