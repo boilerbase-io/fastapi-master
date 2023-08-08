@@ -1,0 +1,21 @@
+# Basic project configs
+CONTACT_EMAIL=contact@demo.com
+
+# Server configs
+LOG_LEVEL=DEBUG
+DEPLOYMENT_ENV=TEST
+SERVER_PORT=8000
+SERVER_HOST=0.0.0.0
+TERMS_OF_SERVICE=https://dummy.url/tnc
+
+# DataBase config
+POSTGRES_USER=boiler_base
+POSTGRES_PASSWORD=saas2password
+POSTGRES_DB=test_db
+POSTGRES_SERVER=localhost
+POSTGRES_PORT=5444
+
+# User Domain Config
+JWT_SECRET_KEY=KJYicwMmWl3NV9mKakNUUqfB1Wluric
+JWT_ALGORITHM=HS256
+JWT_EXPIRATION_TIME=3600
