@@ -2,7 +2,6 @@ from fastapi import APIRouter
 
 from src.user.api import user_router
 
-
 # Router
 api_router = APIRouter()
 
