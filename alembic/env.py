@@ -1,13 +1,10 @@
-from dotenv import load_dotenv
-load_dotenv('.env-dev')
-
 from alembic import context
 from sqlalchemy import create_engine
 from logging.config import fileConfig
 
 from src.config import Config
 
-from utils.db.session import ModelBase
+from utils.db.base import ModelBase
 
 # Importing below modules will make their metadata include in the ModelBase class
 from src.user.models import *
