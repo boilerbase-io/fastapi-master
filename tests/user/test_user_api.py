@@ -12,7 +12,7 @@ def test_create_user(client: TestClient):
             "phone_number_country_code": "+1",
             "phone_number": "1234567890",
             "password": "test@123",
-        }
+        },
     )
 
     assert response.status_code == status.HTTP_201_CREATED

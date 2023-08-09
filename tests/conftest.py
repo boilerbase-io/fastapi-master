@@ -5,39 +5,31 @@ from dotenv import load_dotenv
 
 load_dotenv(TEST_ENV_PATH)
 
-# load tables to create
-from src.user.models import User
-
-
 # necessary imports
 import os
 import uuid
-import pytest
+from typing import Any, Generator
+
 import psycopg2
-
-from typing import Generator
-from utils.db.base import ModelBase
-from pytest import FixtureRequest
-from sqlalchemy.orm import Session
+import pytest
+from fastapi import Depends, FastAPI, Header, HTTPException
 from fastapi.testclient import TestClient
-from sqlalchemy.engine.base import Engine
-from fastapi import FastAPI, HTTPException
 from psycopg2.errors import DuplicateDatabase, InvalidCatalogName
-
-from fastapi import Header, Depends
-from utils.db.session import get_db
-from sqlalchemy import create_engine
-from pytest_factoryboy import register
-from src.main import create_app
-from src.user.utils.deps import authenticated_user
-
-from typing import Any
-from src.user.crud import user_crud
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+from pytest import FixtureRequest
+from pytest_factoryboy import register
+from sqlalchemy import create_engine
+from sqlalchemy.engine.base import Engine
+from sqlalchemy.orm import Session
+
+from src.main import create_app
+from src.user.crud import user_crud
+from src.user.utils.deps import authenticated_user
 
 # Factory imports
 from tests.factory import UserFactory
-
+from utils.db.base import ModelBase
+from utils.db.session import get_db
 
 # load env vars
 DEFAULT_DB_NAME = "postgres"

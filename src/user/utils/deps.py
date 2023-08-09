@@ -1,15 +1,13 @@
+from typing import Annotated, Tuple
+
 import jwt
-from typing import Tuple
-from src.config import Config
-from typing import Annotated
+from fastapi import Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
-from src.user.models import User
-from fastapi import HTTPException, status, Request
 
-from fastapi import Depends
-from utils.db.session import get_db
-
+from src.config import Config
 from src.user.crud import user_crud
+from src.user.models import User
+from utils.db.session import get_db
 
 
 def _authenticated(request: Request):
@@ -38,7 +36,6 @@ def _authenticated_user(
             payload = jwt.decode(
                 access_token, Config.JWT_SECRET_KEY, algorithms=[Config.JWT_ALGORITHM]
             )
-            
             user_id = payload["id"]
             if not user_id:
                 raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid token")

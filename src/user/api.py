@@ -1,17 +1,13 @@
 import uuid
-from src.user.schemas import (
-    LoginRequest,
-    UserBase,
-    Token,
-    UserRequest,
-    UserResponse,
-)
-from fastapi import APIRouter, status, HTTPException
+from typing import List
+
+from fastapi import APIRouter, HTTPException, status
+
 from src.user.crud import user_crud
 from src.user.models import UserRoles
-from src.user.utils.deps import is_authorized_for, authenticated_user
+from src.user.schemas import LoginRequest, Token, UserBase, UserRequest, UserResponse
+from src.user.utils.deps import authenticated_user, is_authorized_for
 from utils.db.session import get_db
-from typing import List
 
 user_router = APIRouter()
 

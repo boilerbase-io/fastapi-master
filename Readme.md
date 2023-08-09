@@ -1,73 +1,70 @@
+# Python-FastAPI Web-Server Boilerplate
+This is a boilerplate for the FastAPI frame work with best practices and pre-setup user domain. one can add the new domains as per the requirements after cloning it.
+
+## This repo contains or will contain following things
+
+- [x] Basic setup and configurations
+- [x] Add User domain with Basic info
+- [x] Support for JWT Auth
+- [x] Alembic DataBase Migration support
+- [ ] Basic test cases setup(In Progress)
+- [ ] Test cases for user domain (In Progress)
+- [X] Docker support
+- [X] pre-commit for code formatting and best practices checks
+- [X] `requirements.txt` file and `dev-requirements.txt` files for row and exact requirements
+
+<br>
+
 # Run the Project Using UVcorn
 
-- uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+### Create virtual env and activate it
 
-Note:
+    python3 -m venv venv
+    source venv/bin/activate
 
-- The environment variables are set with the .env file, therefore, not loading it in the Docker's Environment Variable
-- Not keeping the Models ORM Classes and Pydantic's Schema classes with identical attributes, because some of the Models Attributes contain sensitive information
-- Delete and Place gain Login Token Variable in the request to refresh the new login token pasted in the Postman Environment
+### Install the requirement
 
-# First Time Data Seeding in the Database
+    pip install -r requirement.txt
 
-- The Seeding Data passwords should be normal passwords (and not hashed ones) in the seeding script
-- The Seeding UUID Values all must be in the form of a UUID value only
-- Need to sign up a user, manually make that user admin true in the database, and then access the seeding endpoint to seed the database
+### If this show any error in installation of any dependency install run bellow command
+    pip install -r dev-requirement.txt
 
-Commands:
-docker compose up --build
-docker compose  exec -it web /bin/bash
+### Run Server
+    uvicorn src.main:create_app --host 0.0.0.0 --port 8000 --reload --factory
 
-# Database
+
+# Docker Setup
+    docker compose up --build
+    docker compose  exec -it web /bin/bash
+
+# Database Migration
+Note: If any new entity added to the Project we need to add it to `alembic/env.py`.
 
 Alembic Commands
-alembic revision --autogenerate -m "v0.0 initial commit"
-alembic upgrade head
+### Create a new version fo migration
+`alembic revision --autogenerate -m "v0.0 initial commit"`
+### Upgrade the to newest version
+`alembic upgrade head`
 
 Note: Delete Tables and Data types from Database before migrating
 Note: Delete Sqlalchemy versions scripts from versions folder
 Note: One to one relationships return None when there's no data associated with particular relation. One to Many and others return empty list so, keep checking if None in one to one before accessing db object's attributes
 
-Features
-
-1. Account verification suggestions on login
-2. 
-
-Learnings:
-
-- Keeping __init__.py file inside the directory has some disadvantages
-  for example, when calling the import `<something>` from db.`<something>`.`<something>`, the __init__ file in db, calls all the other modules present in the directory, and we need to install non-needed dependencies even when just seeding
-
-Session Token in the Header has to have - instead of _. Code can have _ and postman - at the same time and still it will match each other
-
 # Docker Debug Endpoint using breakpoint
 
 1. Start the Container in detached mode
 
-- docker compose up -d --build
+- `docker compose up -d --build`
 
 2. List docker running containers and get the id of the container you want to debug
 
-- docker container ps
+- `docker container ps`
 
 3. Attach a debugger to the container
 
-- docker attach `<container ID>`
+- `docker attach <container ID>`
 
 4. Add 'breakpoint()' in endpoint and hit the endpoint to stop at the breakpoint
-
-## Naming Conventions
-
-Table name: User_History (with underscore)
-Schema name: UserHistory (withoutj underscore)
-
-# Business Logic
-
-- Decrease the Credit Usage rate(for services) according to the Frequency of User Credit Usage
-
-# installation issues(ERROR) of psycopg2
-
-- can be solved with this command :: sudo apt install python3-dev libpq-dev
 
 # Run pytest
 

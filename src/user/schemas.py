@@ -1,6 +1,8 @@
 from typing import Optional
+
 from pydantic import BaseModel
-from user.models import UserRoles
+
+from src.user.models import UserRoles
 from utils.schemas.base import BaseSchema
 
 

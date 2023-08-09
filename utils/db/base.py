@@ -1,11 +1,8 @@
-import uuid
 import datetime
+import uuid
 
-from sqlalchemy.ext.declarative import declared_attr
-from sqlalchemy import Column, DateTime, Boolean, String
-
-from sqlalchemy.ext.declarative import as_declarative
-
+from sqlalchemy import Boolean, Column, DateTime, String
+from sqlalchemy.ext.declarative import as_declarative, declared_attr
 
 str_uuid = lambda: str(uuid.uuid4())
 
@@ -35,16 +32,14 @@ class ModelBase:
         new_name = ""
 
         for index, latter in enumerate(old_name[:-1]):
-            if (
-                (not prev_cap and latter.isupper())
-                or (prev_cap and latter.isupper()
-                    and old_name[index+1].islower())
-                ):
-                new_name += ("_" + latter.lower())
+            if (not prev_cap and latter.isupper()) or (
+                prev_cap and latter.isupper() and old_name[index + 1].islower()
+            ):
+                new_name += "_" + latter.lower()
                 prev_cap = True
             else:
                 new_name += latter.lower()
                 prev_cap = latter.isupper()
-        
-        tail = old_name[-1] if old_name[-1].islower() else "_"+old_name[-1].lower()
-        return (new_name+tail).lstrip('_')
+
+        tail = old_name[-1] if old_name[-1].islower() else "_" + old_name[-1].lower()
+        return (new_name + tail).lstrip("_")
