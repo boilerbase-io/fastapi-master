@@ -36,7 +36,6 @@ def _authenticated_user(
             payload = jwt.decode(
                 access_token, Config.JWT_SECRET_KEY, algorithms=[Config.JWT_ALGORITHM]
             )
-
             user_id = payload["id"]
             if not user_id:
                 raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid token")

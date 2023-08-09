@@ -5,9 +5,6 @@ from dotenv import load_dotenv
 
 load_dotenv(TEST_ENV_PATH)
 
-# load tables to create
-
-
 # necessary imports
 import os
 import uuid
