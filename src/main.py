@@ -25,7 +25,7 @@ def create_app():
             return await call_next(request)
         except Exception as exc:
             logging.error(traceback.format_exc())
-            
+
             if isinstance(exc, HTTPException):
                 raise exc
             return JSONResponse(

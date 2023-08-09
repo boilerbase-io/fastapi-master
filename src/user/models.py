@@ -1,10 +1,12 @@
-import jwt
 from enum import Enum
-from sqlalchemy import Column
-from utils.db.base import ModelBase
+
+import jwt
 from passlib.hash import pbkdf2_sha256
+from sqlalchemy import Column
 from sqlalchemy.sql.sqltypes import Boolean, String
+
 from src.config import Config
+from utils.db.base import ModelBase
 
 
 class UserRoles(str, Enum):

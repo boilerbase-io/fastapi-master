@@ -1,10 +1,8 @@
 import factory
-
-from pytest_factoryboy import register
 from faker import Factory as FakerFactory
+from pytest_factoryboy import register
 
 from src.user.models import User, UserRoles
-
 
 faker = FakerFactory.create()
 

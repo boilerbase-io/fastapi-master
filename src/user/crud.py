@@ -1,13 +1,11 @@
-from sqlalchemy.orm import Session
-from utils.crud.base import CRUDBase
-from src.user.schemas import (
-    UserBase,
-    UserUpdate,
-)
-from typing import Union
-from typing import Any, Dict
-from src.user.models import User
+from typing import Any, Dict, Union
+
 from fastapi.encoders import jsonable_encoder
+from sqlalchemy.orm import Session
+
+from src.user.models import User
+from src.user.schemas import UserBase, UserUpdate
+from utils.crud.base import CRUDBase
 
 
 # user crud

@@ -1,9 +1,9 @@
-from typing import Generator, Annotated
-from fastapi import Depends
-from sqlalchemy.orm import sessionmaker, Session
-from sqlalchemy.exc import ProgrammingError
+from typing import Annotated, Generator
 
+from fastapi import Depends
 from sqlalchemy import create_engine
+from sqlalchemy.exc import ProgrammingError
+from sqlalchemy.orm import Session, sessionmaker
 
 from src.config import Config
 

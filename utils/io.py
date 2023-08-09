@@ -3,7 +3,7 @@ import json
 
 def read_json_file(path):
     try:
-        with open(path, "r", encoding="utf-8") as f:
+        with open(path, encoding="utf-8") as f:
             data = json.load(f)
     except Exception as err:
         print(str(err))

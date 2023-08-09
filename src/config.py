@@ -1,13 +1,9 @@
 import os
-
 from pathlib import Path
-from typing import Optional
-from pydantic import AnyHttpUrl, PostgresDsn
+from typing import List, Optional
 
 from dotenv import load_dotenv
-
-from typing import List
-
+from pydantic import AnyHttpUrl, PostgresDsn
 
 load_dotenv(os.getenv("ENV_FILE", ".env"))
 

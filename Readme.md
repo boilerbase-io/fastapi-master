@@ -31,7 +31,7 @@ Note: One to one relationships return None when there's no data associated with 
 Features
 
 1. Account verification suggestions on login
-2. 
+2.
 
 Learnings:
 
