@@ -13,7 +13,7 @@ class UserUpdate(BaseModel):
 
     email: Optional[str]
     phone_number_country_code: Optional[str]
-    phone_number: Optional[int] = None
+    phone_number: Optional[str] = None
 
 
 class UserRequest(UserUpdate):
@@ -32,7 +32,7 @@ class UserResponse(UserUpdate):
     is_banned: bool = False
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserBase(BaseSchema, UserResponse):

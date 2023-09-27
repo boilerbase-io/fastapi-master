@@ -28,7 +28,7 @@ def signup(user_req: UserRequest, db: get_db):
 @user_router.post("/login", response_model=Token, status_code=status.HTTP_200_OK)
 def login(login_creds: LoginRequest, db: get_db):
     user = user_crud.get_by_email(db, login_creds.email)
-    if not user and (not user.check_password(login_creds.password)):
+    if not user or (not user.verify_password(login_creds.password)):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
         )

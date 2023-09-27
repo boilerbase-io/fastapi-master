@@ -8,13 +8,15 @@ from sqlalchemy.orm import Session, sessionmaker
 from src.config import Config
 
 
-def get_db_seed():
-    try:
-        db = SessionLocal()
-    except Exception as err:
-        print(f"Exception Raised: {str(err)}")
-        return None
-    return db
+engine = create_engine(
+    Config.assemble_db_connection(),
+    pool_pre_ping=True,
+    pool_size=500,
+    max_overflow=100,
+    pool_recycle=60 * 60,
+    pool_timeout=30,
+)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 def _get_db() -> Generator:
@@ -30,15 +32,4 @@ def _get_db() -> Generator:
     finally:
         db.close()
 
-
 get_db = Annotated[Session, Depends(_get_db)]
-
-engine = create_engine(
-    Config.assemble_db_connection(),
-    pool_pre_ping=True,
-    pool_size=500,
-    max_overflow=100,
-    pool_recycle=60 * 60,
-    pool_timeout=30,
-)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

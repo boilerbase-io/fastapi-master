@@ -33,9 +33,7 @@ def _authenticated_user(
         access_token = request.headers.get("Authorization")
         user = None
         if access_token:
-            payload = jwt.decode(
-                access_token, Config.JWT_SECRET_KEY, algorithms=[Config.JWT_ALGORITHM]
-            )
+            payload = jwt.decode(access_token.split()[1], Config.JWT_SECRET_KEY, algorithms=[Config.JWT_ALGORITHM])
             user_id = payload["id"]
             if not user_id:
                 raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid token")
@@ -61,12 +59,12 @@ authenticated_user = Annotated[Tuple[User, Session], Depends(_authenticated_user
 
 def _is_authorized_for(roles: list):
     def _is_authorized(user_db: authenticated_user):
-        user, _ = user_db
-        if user.role in roles:
-            return True
-        return False
+        user, db = user_db
+        if user.role not in roles:
+            raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Unauthorized")
+        return user, db
 
     return _is_authorized
 
 
-is_authorized_for = lambda _roles: Annotated[bool, Depends(_is_authorized_for(_roles))]
+is_authorized_for = lambda _roles: Annotated[Tuple[User, Session], Depends(_is_authorized_for(_roles))]
