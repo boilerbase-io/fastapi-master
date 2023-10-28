@@ -19,6 +19,7 @@ repos:
                 "--remove-unused-variable",
                 "--ignore-init-module-imports",
                 "--remove-all-unused-imports",
+                "--expand-star-imports",
             ]
 
 -   repo: https://github.com/asottile/pyupgrade

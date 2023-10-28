@@ -14,7 +14,7 @@ class UserCRUD(CRUDBase[User, UserBase, UserUpdate]):
         return db.query(User).filter(User.email == email).first()
 
     def create(self, db: Session, *, obj_in: UserBase) -> User:
-        obj_in_data: dict = jsonable_encoder(obj_in)
+        obj_in_data: dict = jsonable_encoder(obj_in, exclude_unset=True)
         password = obj_in_data.pop("password", None)
         db_obj = self.model(**obj_in_data)
         if password:
@@ -26,7 +26,7 @@ class UserCRUD(CRUDBase[User, UserBase, UserUpdate]):
     def update(
         self, db: Session, *, db_obj: User, obj_in: Union[UserUpdate, Dict[str, Any]]
     ) -> User:
-        obj_data: dict = jsonable_encoder(db_obj)
+        obj_data: dict = jsonable_encoder(db_obj, exclude_unset=True)
         password = obj_data.pop("password", None)
         if isinstance(obj_in, dict):
             update_data = obj_in
