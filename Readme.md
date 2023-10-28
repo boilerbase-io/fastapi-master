@@ -7,8 +7,8 @@ This is a boilerplate for the FastAPI frame work with best practices and pre-set
 - [x] Add User domain with Basic info
 - [x] Support for JWT Auth
 - [x] Alembic DataBase Migration support
-- [ ] Basic test cases setup(In Progress)
-- [ ] Test cases for user domain (In Progress)
+- [x] Basic test cases setup
+- [x] Test cases for user domain (SSO/3rd party login not implemented yet)
 - [X] Docker support
 - [X] pre-commit for code formatting and best practices checks
 - [X] `requirements.txt` file and `dev-requirements.txt` files for row and exact requirements
