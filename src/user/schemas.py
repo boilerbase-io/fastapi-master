@@ -1,19 +1,19 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from src.user.models import UserRoles
 from utils.schemas.base import BaseSchema
 
 
 class UserUpdate(BaseModel):
-    firstname: Optional[str]
-    lastname: Optional[str]
+    firstname: Optional[str] = None
+    lastname: Optional[str] = None
     image_url: Optional[str] = None
 
-    email: Optional[str]
-    phone_number_country_code: Optional[str]
-    phone_number: Optional[int] = None
+    email: Optional[str] = None
+    phone_number_country_code: Optional[str] = None
+    phone_number: Optional[str] = None
 
 
 class UserRequest(UserUpdate):
@@ -31,8 +31,8 @@ class UserResponse(UserUpdate):
     is_active: bool = True
     is_banned: bool = False
 
-    class Config:
-        orm_mode = True
+    # model config for orm models
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserBase(BaseSchema, UserResponse):
@@ -47,4 +47,5 @@ class LoginRequest(BaseModel):
 
 
 class Token(BaseModel):
+    user: UserResponse
     token: str

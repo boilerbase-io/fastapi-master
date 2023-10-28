@@ -9,13 +9,32 @@ SERVER_HOST=0.0.0.0
 TERMS_OF_SERVICE=https://dummy.url/tnc
 
 # DataBase config
-POSTGRES_USER=boiler_base
-POSTGRES_PASSWORD=saas2password
-POSTGRES_DB=test_db
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=pytest_db
 POSTGRES_SERVER=localhost
 POSTGRES_PORT=5444
 
 # User Domain Config
 JWT_ALGORITHM=HS256
 JWT_SECRET_KEY=KJYicwMmWl3NV9mKakNUUqfB1Wluric
-JWT_EXPIRATION_TIME=3600
+JWT_EXPIRATION_TIME=86400
+
+# Google OAuth2 Config
+GOOGLE_CLIENT_ID=this-is-a-test-client-id.apps.googleusercontent.com
+GOOGLE_PROJECT_ID=this-is-a-test-project
+GOOGLE_AUTH_URI=https://accounts.google.com/o/oauth2/auth
+GOOGLE_TOKEN_URI=https://oauth2.googleapis.com/token
+GOOGLE_AUTH_PROVIDER_X509_CERT_URL=https://www.googleapis.com/oauth2/v1/certs
+GOOGLE_CLIENT_SECRET=this-is-a-test-secret
+GOOGLE_AUTH_REDIRECT_URI=http://localhost:8000/auth/google/callback
+
+# Facebook OAuth2 Config
+FB_CLIENT_ID=this-is-a-test-client-id
+FB_CLIENT_SECRET=this-is-a-test-secret
+FB_AUTH_REDIRECT_URI=http://localhost:8000/auth/facebook/callback
+
+# LinkedIn OAuth2 Config
+LINKEDIN_CLIENT_ID=this-is-a-test-client-id
+LINKEDIN_CLIENT_SECRET=this-is-a-test-secret
+LINKEDIN_AUTH_REDIRECT_URI=http://localhost:8000/auth/linkedin/callback

@@ -3,6 +3,7 @@ from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.expression import false
 
 from utils.db.base import ModelBase
 
@@ -22,7 +23,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     def get(self, db: Session, id: Any) -> Optional[ModelType]:
         return (
             db.query(self.model)
-            .filter(self.model.id == id, self.model.is_deleted == False)
+            .filter(self.model.id == id, self.model.is_deleted == false())
             .first()
         )
 
@@ -34,7 +35,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     ) -> List[ModelType]:
         return (
             db.query(self.model)
-            .filter(self.model.is_deleted == False)
+            .filter(self.model.is_deleted == false())
             .offset(self.calc_offset(page, per_page))
             .limit(per_page)
             .all()
@@ -51,7 +52,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         )
 
     def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:
-        obj_in_data = jsonable_encoder(obj_in)
+        obj_in_data = jsonable_encoder(obj_in, exclude_unset=True)
         db_obj = self.model(**obj_in_data)
         db.add(db_obj)
         db.commit()
@@ -64,11 +65,11 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db_obj: ModelType,
         obj_in: Union[UpdateSchemaType, Dict[str, Any]]
     ) -> ModelType:
-        obj_data = jsonable_encoder(db_obj)
+        obj_data = jsonable_encoder(db_obj, exclude_unset=True)
         if isinstance(obj_in, dict):
             update_data = obj_in
         else:
-            update_data = obj_in.dict(exclude_unset=True)
+            update_data = obj_in.model_dump(exclude_unset=True)
         for field in obj_data:
             if field in update_data:
                 setattr(db_obj, field, update_data[field])
@@ -96,7 +97,9 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     def add_all(
         self, db: Session, *, objs_in: List[CreateSchemaType]
     ) -> List[ModelType]:
-        db_objs = [self.model(**jsonable_encoder(c)) for c in objs_in]
+        db_objs = [
+            self.model(**jsonable_encoder(c, exclude_unset=True)) for c in objs_in
+        ]
         db.add_all(db_objs)
         db.commit()
         return db_objs
