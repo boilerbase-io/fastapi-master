@@ -3,6 +3,8 @@ TEST_ENV_PATH = "./tests/.test_env"
 
 from dotenv import load_dotenv
 
+from src.user.models import UserRoles
+
 load_dotenv(TEST_ENV_PATH)
 
 # necessary imports
@@ -12,7 +14,7 @@ from typing import Any, Generator
 
 import psycopg2
 import pytest
-from fastapi import Depends, FastAPI, Header, HTTPException
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from psycopg2.errors import DuplicateDatabase, InvalidCatalogName
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
@@ -23,8 +25,6 @@ from sqlalchemy.engine.base import Engine
 from sqlalchemy.orm import Session
 
 from src.main import create_app
-from src.user.crud import user_crud
-from src.user.utils.deps import authenticated_user
 
 # Factory imports
 from tests.factory import UserFactory
@@ -161,21 +161,8 @@ def client(app: FastAPI, db_session: Session) -> Generator[TestClient, Any, None
         finally:
             pass
 
-    def _authenticated_user(
-        session_token: str = Header(None), db: Session = Depends(_get_test_db)
-    ):
-        user_id = session_token
-        try:
-            user = user_crud.get_by_id(db, id=user_id)
-            if user:
-                return db, user
-            else:
-                raise HTTPException(401, "Not a valid user")
-        except Exception:
-            raise HTTPException(401, "Not a valid token")
-
     app.dependency_overrides[get_db] = _get_test_db
-    app.dependency_overrides[authenticated_user] = _authenticated_user
+
     with TestClient(app) as client:
         yield client
 
@@ -237,5 +224,5 @@ def persisted_user(persistent_db_session, user):
 
 @pytest.fixture
 def persisted_admin_user(persistent_db_session, user):
-    user.is_admin = True
+    user.role = UserRoles.ADMIN.value
     return pytest.persist_object(persistent_db_session, user)

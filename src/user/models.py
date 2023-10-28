@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from enum import Enum
 
 import jwt
@@ -13,6 +14,12 @@ class UserRoles(str, Enum):
     USER = "USER"
     ADMIN = "ADMIN"
     SUPER_ADMIN = "SUPER_ADMIN"
+
+
+class AuthProvider(Enum):
+    GOOGLE = "google"
+    FACEBOOK = "facebook"
+    LINKEDIN = "linkedin"
 
 
 class User(ModelBase):
@@ -59,8 +66,11 @@ class User(ModelBase):
                 "role": self.role,
                 "is_active": self.is_active,
                 "is_banned": self.is_banned,
-                "exp": Config.JWT_EXPIRATION_TIME,
+                "exp": (
+                    datetime.utcnow()
+                    + timedelta(seconds=int(Config.JWT_EXPIRATION_TIME))
+                ).timestamp(),
             },
             key=Config.JWT_SECRET_KEY,
             algorithm=Config.JWT_ALGORITHM,
-        ).decode("utf-8")
+        )

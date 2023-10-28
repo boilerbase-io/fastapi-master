@@ -2,7 +2,7 @@ import datetime
 import uuid
 
 from sqlalchemy import Boolean, Column, DateTime, String
-from sqlalchemy.ext.declarative import as_declarative, declared_attr
+from sqlalchemy.orm import as_declarative, declared_attr
 
 str_uuid = lambda: str(uuid.uuid4())
 

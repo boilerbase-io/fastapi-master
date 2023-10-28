@@ -56,4 +56,28 @@ class Config:
     JWT_ALGORITHM: str = os.environ["JWT_ALGORITHM"]
     JWT_SECRET_KEY: str = os.environ["JWT_SECRET_KEY"]
     JWT_EXPIRATION_TIME: int = os.environ["JWT_EXPIRATION_TIME"]
+
+    # Google SSO
+    GOOGLE_CLIENT_ID: str = os.environ["GOOGLE_CLIENT_ID"]
+    GOOGLE_PROJECT_ID: str = os.environ["GOOGLE_PROJECT_ID"]
+    GOOGLE_AUTH_URI: str = os.environ["GOOGLE_AUTH_URI"]
+    GOOGLE_TOKEN_URI: str = os.environ["GOOGLE_TOKEN_URI"]
+    GOOGLE_AUTH_PROVIDER_X509_CERT_URL: str = os.environ[
+        "GOOGLE_AUTH_PROVIDER_X509_CERT_URL"
+    ]
+    GOOGLE_CLIENT_SECRET: str = os.environ["GOOGLE_CLIENT_SECRET"]
+    GOOGLE_AUTH_REDIRECT_URI: str = os.environ["GOOGLE_AUTH_REDIRECT_URI"]
+    if DEPLOYMENT_ENV == "DEV":
+        # to allow http traffic for local development
+        os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+
+    # Facebook SSO
+    FB_CLIENT_ID: str = os.environ["FB_CLIENT_ID"]
+    FB_CLIENT_SECRET: str = os.environ["FB_CLIENT_SECRET"]
+    FB_AUTH_REDIRECT_URI: str = os.environ["FB_AUTH_REDIRECT_URI"]
+
+    # Linkedin SSO
+    LINKEDIN_CLIENT_ID: str = os.environ["LINKEDIN_CLIENT_ID"]
+    LINKEDIN_CLIENT_SECRET: str = os.environ["LINKEDIN_CLIENT_SECRET"]
+    LINKEDIN_AUTH_REDIRECT_URI: str = os.environ["LINKEDIN_AUTH_REDIRECT_URI"]
     # ================================== DIVISION END ============================================
